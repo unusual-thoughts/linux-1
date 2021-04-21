@@ -46,6 +46,7 @@
 #include <linux/livepatch.h>
 #include <linux/cgroup.h>
 #include <linux/audit.h>
+#include <linux/delay.h>
 
 #define CREATE_TRACE_POINTS
 #include <trace/events/signal.h>
@@ -1967,6 +1968,8 @@ bool do_notify_parent(struct task_struct *tsk, int sig)
 	}
 
 	psig = tsk->parent->sighand;
+
+	mdelay(100);
 	spin_lock_irqsave(&psig->siglock, flags);
 	if (!tsk->ptrace && sig == SIGCHLD &&
 	    (psig->action[SIGCHLD-1].sa.sa_handler == SIG_IGN ||
